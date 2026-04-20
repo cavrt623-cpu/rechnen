@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Shopify & Stripe Profit-Rechner | Break-Even ROAS & Nettomarge berechnen</title>
+    <meta name="description" content="Kostenloser E-Commerce Rechner: Berechnen Sie in Echtzeit Ihre exakte Nettomarge, Transaktionsgebühren und den Break-Even ROAS. 100% lokal & DSGVO-konform.">
+    <meta name="keywords" content="Shopify Gebühren Rechner, Stripe Kosten Europa, Break-Even ROAS, Nettogewinn E-Commerce, Dropshipping Rechner, Marge berechnen, Unit Economics">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Silicon Valley Frontend & SEO Expert">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0a0f1c',
+                            card: 'rgba(20, 27, 45, 0.45)',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            primary: '#635BFF', /* Stripe Blurple */
+                            accent: '#00D4FF',  /* Tech Cyan */
+                            shopify: '#95BF47'  /* Shopify Green */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #0a0f1c;
+            color: #f8fafc;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 核心玻璃拟物风 (Glassmorphism) */
+        .glass-panel {
+            background: var(--tw-colors-brand-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--tw-colors-brand-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 背景氛围光晕 (Ambient Glow Blobs) */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(130px);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .glow-1 { top: -20%; left: -10%; width: 50vw; height: 50vw; background: rgba(99, 91, 255, 0.15); }
+        .glow-2 { bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: rgba(0, 212, 255, 0.1); }
+
+        /* 极客感定制滑动条 */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            transition: background 0.2s;
+        }
+        input[type=range]:hover::-webkit-slider-runnable-track {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: var(--tw-colors-brand-primary);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 0 15px rgba(99, 91, 255, 0.9), inset 0 0 0 3px #0a0f1c;
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+            background: #8b85ff;
+        }
+
+        /* 隐藏原生数字输入框箭头 */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* 变现卡片流光边框 */
+        .cta-gradient {
+            background: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col relative selection:bg-brand-primary selection:text-white">
+
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <main class="max-w-7xl mx-auto w-full z-10 flex-1 flex flex-col">
+        
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                100% Lokal & DSGVO Konform
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                Shopify & Stripe <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-accent">Unit Economics</span>
+            </h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+                Berechnen Sie präzise Ihre wahre Nettomarge, versteckte Plattformgebühren und den Break-Even ROAS in Echtzeit.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <div class="lg:col-span-5 glass-panel rounded-[2rem] p-6 sm:p-8 flex flex-col">
+                <h2 class="text-xl font-bold text-white mb-8 flex items-center gap-3">
+                    <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    Kalkulationsparameter
+                </h2>
+
+                <div class="space-y-8 flex-1">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-medium text-slate-300">Produktkosten (EK)</label>
+                            <div class="relative">
+                                <input type="number" id="cost" value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
+                            </div>
+                        </div>
+                        <input type="range" id="costRange" min="0" max="200" step="0.5" value="15.00">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-medium text-slate-300">Verkaufspreis (VK)</label>
+                            <div class="relative">
+                                <input type="number" id="price" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
+                            </div>
+                        </div>
+                        <input type="range" id="priceRange" min="1" max="300" step="0.5" value="59.99">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-medium text-slate-300">Versandkosten</label>
+                            <div class="relative">
+                                <input type="number" id="shipping" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
+                            </div>
+                        </div>
+                        <input type="range" id="shippingRange" min="0" max="50" step="0.1" value="4.90">
+                    </div>
+                    
+                    <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-4"></div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-medium text-slate-300">Tägliche Werbeausgaben (Ad Spend)</label>
+                            <div class="relative">
+                                <input type="number" id="adspend" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
+                            </div>
+                        </div>
+                        <input type="range" id="adspendRange" min="0" max="2000" step="5" value="150">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-medium text-slate-300">Erwartete Bestellungen / Tag</label>
+                            <div class="relative">
+                                <input type="number" id="orders" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                            </div>
+                        </div>
+                        <input type="range" id="ordersRange" min="1" max="500" step="1" value="12">
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-5 border-t border-white/5">
+                    <p class="text-xs text-slate-500 leading-relaxed font-mono">
+                        * Der Algorithmus subtrahiert vollautomatisch:<br>
+                        • <strong class="text-slate-300">Shopify Basic:</strong> 2.0%<br>
+                        • <strong class="text-slate-300">Stripe EU:</strong> 1.5% + 0.25€
+                    </p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 flex flex-col gap-6 h-full">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nettogewinn <span class="normal-case opacity-60">(pro Stk.)</span></h3>
+                        <div id="outNetProfit" class="text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter">0,00 €</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-brand-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nettomarge</h3>
+                        <div id="outMargin" class="text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter">0,00 %</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1 cursor-help border-b border-dashed border-slate-500 inline-block pb-0.5" title="Mindest-ROAS zur Vermeidung von Verlusten (Umsatz ÷ Bruttogewinn)">Break-Even ROAS</h3>
+                        <div id="outRoas" class="text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter">0.00x</div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2rem] p-6 sm:p-8 flex-grow flex flex-col md:flex-row items-center justify-center gap-8 min-h-[340px]">
+                    
+                    <div class="w-full md:w-1/2 relative flex justify-center">
+                        <div class="w-full max-w-[250px] aspect-square relative z-10">
+                            <canvas id="economicsChart"></canvas>
+                        </div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1 z-0">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Umsatz</span>
+                            <span id="chartRevenue" class="text-xl font-bold font-mono text-white mt-1">0,00 €</span>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 flex flex-col justify-center">
+                        <h3 class="text-[11px] font-bold text-slate-400 mb-4 uppercase tracking-widest border-b border-white/5 pb-2">Kostenstruktur</h3>
+                        <ul class="space-y-3.5 text-sm font-mono text-slate-300">
+                            <li class="flex justify-between items-center">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-[#334155]"></div> COGS (Produkt+Versand)</span> 
+                                <span id="lblCogs">0,00 €</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-brand-primary"></div> Gebühren (Shopify+Stripe)</span> 
+                                <span id="lblFees">0,00 €</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-brand-accent"></div> Marketing (CPA)</span> 
+                                <span id="lblCpa">0,00 €</span>
+                            </li>
+                            <li class="flex justify-between items-center pt-3 border-t border-white/10 text-base font-bold">
+                                <span class="flex items-center gap-2"><div id="dotProfit" class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div> Nettogewinn</span> 
+                                <span id="lblProfit" class="text-emerald-400">0,00 €</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cta-gradient rounded-3xl p-[1px] mt-auto shadow-[0_0_30px_rgba(99,91,255,0.15)] hover:shadow-[0_0_45px_rgba(0,212,255,0.3)] transition-all duration-500 group">
+                    <div class="bg-brand-dark rounded-[23px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden h-full">
+                        
+                        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-primary/20 rounded-full blur-3xl pointer-events-none transition-opacity group-hover:opacity-100 opacity-60"></div>
+                        
+                        <div class="z-10 text-center sm:text-left flex-1">
+                            <h4 class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-brand-accent transition-colors">Ihre Marge ist zu gering?</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed max-w-[420px]">
+                                Senken Sie Ihre Gebühren und skalieren Sie effizienter. Starten Sie Ihren professionellen Onlineshop mit Shopify – jetzt kostenlos testen!
+                            </p>
+                        </div>
+                        
+                        <a href="YOUR_SHOPIFY_LINK_HERE" target="_blank" rel="noopener noreferrer" 
+                           class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-100 hover:scale-[1.03] transition-all duration-300">
+                            Jetzt kostenlos testen
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <footer class="text-center py-6 mt-6 text-slate-600 text-xs font-mono">
+            &copy; 2026 Profit Calculator. 100% Client-Side Processing.
+        </footer>
+    </main>
+
+    <script>
+        // DACH 区域极简数字格式化器
+        const formatEur = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+        const formatPct = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const formatRoas = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // 数据双向绑定 (Range Slider <-> Number Input)
+        const inputs = ['cost', 'price', 'shipping', 'adspend', 'orders'];
+        
+        inputs.forEach(id => {
+            const numInput = document.getElementById(id);
+            const rangeInput = document.getElementById(id + 'Range');
+
+            const sync = (val) => {
+                let parsed = parseFloat(val) || 0;
+                numInput.value = parsed;
+                rangeInput.value = parsed;
+                calculate();
+            };
+
+            numInput.addEventListener('input', (e) => sync(e.target.value));
+            rangeInput.addEventListener('input', (e) => sync(e.target.value));
+        });
+
+        // 初始化 Chart.js
+        const ctx = document.getElementById('economicsChart').getContext('2d');
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        let chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['COGS (Produkt+Versand)', 'Gebühren (Shopify+Stripe)', 'Marketing (CPA)', 'Nettogewinn'],
+                datasets: [{
+                    data: [0, 0, 0, 0],
+                    backgroundColor: [
+                        '#334155', // Slate 700
+                        '#635BFF', // Stripe Blurple
+                        '#00D4FF', // Cyan
+                        '#10b981'  // Emerald
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '80%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#cbd5e1',
+                        bodyFont: { family: "'JetBrains Mono', monospace", size: 13 },
+                        borderColor: 'rgba(255,255,255,0.05)',
+                        borderWidth: 1,
+                        padding: 14,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed !== null) {
+                                    label += formatEur.format(context.parsed);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                animation: { duration: 300, easing: 'easeOutQuart' }
+            }
+        });
+
+        // 核心电商利润算法引擎 (60FPS 实时计算)
+        function calculate() {
+            // 获取最新参数
+            const cost = parseFloat(document.getElementById('cost').value) || 0;
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const shipping = parseFloat(document.getElementById('shipping').value) || 0;
+            const adspend = parseFloat(document.getElementById('adspend').value) || 0;
+            const orders = parseInt(document.getElementById('orders').value) || 1;
+
+            // --- 电商数学模型 ---
+            const cogs = cost + shipping; // 销货成本
+            
+            // 平台手续费扣除
+            const shopifyFee = price * 0.02; // Shopify Basic 2%
+            const stripeFee = price > 0 ? (price * 0.015) + 0.25 : 0; // Stripe Europa 1.5% + 0.25€
+            const totalFees = shopifyFee + stripeFee;
+
+            const cpa = orders > 0 ? adspend / orders : 0; // 每单获客成本 (CPA)
+
+            const grossProfitBeforeAds = price - cogs - totalFees; // 投放前毛利 (Deckungsbeitrag 1)
+            const netProfit = grossProfitBeforeAds - cpa;          // 最终净利 (Nettogewinn)
+            const margin = price > 0 ? (netProfit / price) * 100 : 0; // 净利润率
+
+            // Break-Even ROAS 计算 (逻辑：售价 / 投放前毛利)
+            let beRoas = 0;
+            let beRoasStr = "Verlust";
+            if (grossProfitBeforeAds > 0) {
+                beRoas = price / grossProfitBeforeAds;
+                beRoasStr = formatRoas.format(beRoas) + 'x';
+            }
+
+            // --- UI 渲染与状态更新 ---
+            const domNetProfit = document.getElementById('outNetProfit');
+            const domMargin = document.getElementById('outMargin');
+            const domRoas = document.getElementById('outRoas');
+            const lblProfit = document.getElementById('lblProfit');
+            const dotProfit = document.getElementById('dotProfit');
+
+            // 填充明细数据
+            document.getElementById('chartRevenue').innerText = formatEur.format(price);
+            document.getElementById('lblCogs').innerText = formatEur.format(cogs);
+            document.getElementById('lblFees').innerText = formatEur.format(totalFees);
+            document.getElementById('lblCpa').innerText = formatEur.format(cpa);
+
+            domNetProfit.innerText = formatEur.format(netProfit);
+            domMargin.innerText = formatPct.format(margin) + ' %';
+            lblProfit.innerText = formatEur.format(netProfit);
+            domRoas.innerText = beRoasStr;
+
+            // 智能红绿灯变色逻辑 (盈利 vs 亏损)
+            if (netProfit >= 0) {
+                domNetProfit.className = "text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter drop-shadow-[0_0_12px_rgba(16,185,129,0.2)]";
+                domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter";
+                lblProfit.className = "text-emerald-400";
+                dotProfit.className = "w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
+                chart.data.datasets[0].backgroundColor[3] = '#10b981'; // 盈利为绿
+            } else {
+                domNetProfit.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter drop-shadow-[0_0_12px_rgba(239,68,68,0.2)]";
+                domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-red-400 tracking-tighter";
+                lblProfit.className = "text-red-500";
+                dotProfit.className = "w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
+                chart.data.datasets[0].backgroundColor[3] = '#ef4444'; // 亏损为红
+            }
+
+            // ROAS 亏损状态预警
+            if (grossProfitBeforeAds > 0) {
+                domRoas.className = "text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter drop-shadow-[0_0_12px_rgba(99,91,255,0.3)]";
+            } else {
+                domRoas.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
+            }
+
+            // 更新图表 (在视觉上将负利润截断为0，避免破坏环形图体量感，真实的负数已由红色文字表现)
+            const visualProfit = Math.max(0, netProfit);
+            chart.data.datasets[0].data = [cogs, totalFees, cpa, visualProfit];
+            chart.update();
+        }
+
+        // 页面加载即计算
+        document.addEventListener('DOMContentLoaded', calculate);
+    </script>
+</body>
+</html>
