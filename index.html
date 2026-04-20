@@ -157,7 +157,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Produktkosten (EK)</label>
                             <div class="relative">
-                                <input type="number" id="cost" inputmode="decimal" pattern="[0-9]* value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="cost" inputmode="decimal" pattern="[0-9]*" value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Verkaufspreis (VK)</label>
                             <div class="relative">
-                                <input type="number" id="price" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="price" inputmode="decimal" pattern="[0-9]*" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Versandkosten</label>
                             <div class="relative">
-                                <input type="number" id="shipping" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="shipping" inputmode="decimal" pattern="[0-9]*" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -192,7 +192,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Tägliche Werbeausgaben (Ad Spend)</label>
                             <div class="relative">
-                                <input type="number" id="adspend" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="adspend" inputmode="decimal" pattern="[0-9]*" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Erwartete Bestellungen / Tag</label>
                             <div class="relative">
-                                <input type="number" id="orders" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="orders" inputmode="decimal" pattern="[0-9]*" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
                             </div>
                         </div>
                         <input type="range" id="ordersRange" min="1" max="500" step="1" value="12">
