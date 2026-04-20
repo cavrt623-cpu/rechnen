@@ -118,6 +118,10 @@
         .cta-gradient {
             background: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%);
         }
+        /* 阻止 iOS Safari 点击输入框自动放大 */
+        @media screen and (max-width: 768px) {
+            input[type="number"], input[type="text"] { font-size: 16px !important; }
+        }
     </style>
 </head>
 <body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col relative selection:bg-brand-primary selection:text-white">
@@ -282,7 +286,7 @@
                             </p>
                         </div>
                         
-                        <a href="YOUR_SHOPIFY_LINK_HERE" target="_blank" rel="noopener noreferrer" 
+                        <a href="https://www.shopify.com/de/free-trial" target="_blank" rel="nofollow sponsored noopener noreferrer"
                            class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-100 hover:scale-[1.03] transition-all duration-300">
                             Jetzt kostenlos testen
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -293,8 +297,17 @@
             </div>
         </div>
         
-        <footer class="text-center py-6 mt-6 text-slate-600 text-xs font-mono">
-            &copy; 2026 Profit Calculator. 100% Client-Side Processing.
+        <footer class="text-center py-8 mt-10 border-t border-white/5 flex flex-col items-center gap-4 relative z-20">
+            <p class="text-slate-500 text-xs font-mono">
+                &copy; 2026 E-Commerce Unit Economics. 100% Client-Side Processing.
+            </p>
+            <p class="text-slate-600 text-[10px] max-w-2xl px-4 leading-relaxed">
+                * Transparenz-Hinweis: Dieses Tool verarbeitet alle Daten lokal in Ihrem Browser (DSGVO-konform). Wenn Sie über unsere Links einen Shopify-Shop eröffnen, erhalten wir ggf. eine Provision. Dies hält das Tool kostenlos.
+            </p>
+            <div class="flex gap-6 text-[11px] text-slate-500 underline decoration-slate-700 underline-offset-4">
+                <a href="#" onclick="alert('Impressum\n\nBetrieben von unabhängigen E-Commerce Entwicklern.\nKontakt: hello@' + window.location.hostname); return false;" class="hover:text-slate-300 transition-colors">Impressum</a>
+                <a href="#" onclick="alert('Datenschutz\n\nWir verwenden keine Cookies und speichern keine Nutzerdaten. Alle Berechnungen finden ausschließlich lokal in Ihrem Browser statt.'); return false;" class="hover:text-slate-300 transition-colors">Datenschutz</a>
+            </div>
         </footer>
     </main>
 
