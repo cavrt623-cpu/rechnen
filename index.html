@@ -494,5 +494,18 @@
         // 页面加载即计算
         document.addEventListener('DOMContentLoaded', calculate);
     </script>
+    <script>
+    // 禁用鼠标右键菜单
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    
+    // 禁用 F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (查看源码)
+    document.onkeydown = function(e) {
+        if(e.keyCode == 123 || 
+          (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
+          (e.ctrlKey && e.keyCode == 85)) {
+            return false;
+        }
+    }
+</script>
 </body>
 </html>
