@@ -8,34 +8,19 @@
     <meta name="description" content="Kostenloser E-Commerce Rechner: Berechnen Sie in Echtzeit Ihre exakte Nettomarge, Transaktionsgebühren und den Break-Even ROAS. 100% lokal & DSGVO-konform.">
     <meta name="keywords" content="Shopify Gebühren Rechner, Stripe Kosten Europa, Break-Even ROAS, Nettogewinn E-Commerce, Dropshipping Rechner, Marge berechnen, Unit Economics">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Silicon Valley Frontend & SEO Expert">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://roas-rechner.online/">
-    <meta property="og:title" content="Shopify & Stripe Unit Economics Rechner">
-    <meta property="og:description" content="Berechnen Sie Ihre exakte Nettomarge und den Break-Even ROAS in Echtzeit. 100% lokal & DSGVO-konform.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80">
-
+    
     <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Shopify & Stripe ROAS Rechner",
-  "url": "https://roas-rechner.online",
-  "description": "Kostenloser E-Commerce Rechner zur Berechnung von Nettomarge und Break-Even ROAS.",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "All",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "EUR"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "ratingCount": "328"
-  }
-}
-</script>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Shopify & Stripe ROAS Rechner",
+      "url": "https://roas-rechner.online",
+      "description": "Kostenloser E-Commerce Rechner zur Berechnung von Nettomarge und Break-Even ROAS.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -52,9 +37,8 @@
                             dark: '#0a0f1c',
                             card: 'rgba(20, 27, 45, 0.45)',
                             border: 'rgba(255, 255, 255, 0.08)',
-                            primary: '#635BFF', /* Stripe Blurple */
-                            accent: '#00D4FF',  /* Tech Cyan */
-                            shopify: '#95BF47'  /* Shopify Green */
+                            primary: '#635BFF',
+                            accent: '#00D4FF'
                         }
                     }
                 }
@@ -63,103 +47,39 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body {
-            background-color: #0a0f1c;
-            color: #f8fafc;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* 核心玻璃拟物风 (Glassmorphism) */
-        .glass-panel {
-            background: var(--tw-colors-brand-card);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--tw-colors-brand-border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        /* 背景氛围光晕 (Ambient Glow Blobs) */
-        .ambient-glow {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(130px);
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.6;
-        }
+        body { background-color: #0a0f1c; color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        .glass-panel { background: var(--tw-colors-brand-card); backdrop-filter: blur(24px); border: 1px solid var(--tw-colors-brand-border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .ambient-glow { position: fixed; border-radius: 50%; filter: blur(130px); z-index: -1; pointer-events: none; opacity: 0.6; transition: background 0.5s ease; }
         .glow-1 { top: -20%; left: -10%; width: 50vw; height: 50vw; background: rgba(99, 91, 255, 0.15); }
         .glow-2 { bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: rgba(0, 212, 255, 0.1); }
 
-        /* 极客感定制滑动条 */
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: transparent;
-        }
-        input[type=range]:focus {
-            outline: none;
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 6px;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            transition: background 0.2s;
-        }
-        input[type=range]:hover::-webkit-slider-runnable-track {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        input[type=range]::-webkit-slider-thumb {
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: var(--tw-colors-brand-primary);
-            cursor: pointer;
-            -webkit-appearance: none;
-            margin-top: -7px;
-            box-shadow: 0 0 15px rgba(99, 91, 255, 0.9), inset 0 0 0 3px #0a0f1c;
-            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        input[type=range]::-webkit-slider-thumb:hover {
-            transform: scale(1.25);
-            background: #8b85ff;
-        }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: rgba(255, 255, 255, 0.1); border-radius: 9999px; transition: background 0.2s; }
+        input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.2); }
+        input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--tw-colors-brand-primary); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 0 15px rgba(99, 91, 255, 0.9), inset 0 0 0 3px #0a0f1c; transition: transform 0.15s; }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); background: #8b85ff; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
 
-        /* 隐藏原生数字输入框箭头 */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        /* 变现卡片流光边框 */
-        .cta-gradient {
-            background: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%);
-        }
-        /* 阻止 iOS Safari 点击输入框自动放大 */
-        @media screen and (max-width: 768px) {
-            input[type="number"], input[type="text"] { font-size: 16px !important; }
-        }
+        /* 情绪变色龙样式 */
+        .cta-profit { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 0 30px rgba(16,185,129,0.15); }
+        .cta-loss { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); box-shadow: 0 0 30px rgba(239,68,68,0.15); }
+        .cta-neutral { background: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%); }
     </style>
 </head>
 <body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col relative selection:bg-brand-primary selection:text-white">
-<script type="text/javascript" src="https://s.skimresources.com/js/301790X1789763.skimlinks.js"></script>
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
+    
+    <div class="ambient-glow glow-1" id="bgGlow1"></div>
+    <div class="ambient-glow glow-2" id="bgGlow2"></div>
 
     <main class="max-w-7xl mx-auto w-full z-10 flex-1 flex flex-col">
         
         <header class="text-center mb-10">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-6">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 100% Lokal & DSGVO Konform
             </div>
@@ -167,15 +87,15 @@
                 Shopify & Stripe <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-accent">Unit Economics</span>
             </h1>
             <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-                Berechnen Sie präzise Ihre wahre Nettomarge, versteckte Plattformgebühren und den Break-Even ROAS in Echtzeit.
+                Berechnen Sie präzise Ihre wahre Nettomarge, versteckte Plattformgebühren und den Break-Even ROAS.
             </p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
             
             <div class="lg:col-span-5 glass-panel rounded-[2rem] p-6 sm:p-8 flex flex-col">
                 <h2 class="text-xl font-bold text-white mb-8 flex items-center gap-3">
-                    <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                     Kalkulationsparameter
                 </h2>
 
@@ -184,7 +104,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Produktkosten (EK)</label>
                             <div class="relative">
-                                <input type="number" id="cost" inputmode="decimal" pattern="[0-9]*" value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="cost" inputmode="decimal" value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -195,7 +115,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Verkaufspreis (VK)</label>
                             <div class="relative">
-                                <input type="number" id="price" inputmode="decimal" pattern="[0-9]*" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="price" inputmode="decimal" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -206,7 +126,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Versandkosten</label>
                             <div class="relative">
-                                <input type="number" id="shipping" inputmode="decimal" pattern="[0-9]*" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="shipping" inputmode="decimal" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -217,9 +137,9 @@
 
                     <div>
                         <div class="flex justify-between items-center mb-3">
-                            <label class="text-sm font-medium text-slate-300">Tägliche Werbeausgaben (Ad Spend)</label>
+                            <label class="text-sm font-medium text-slate-300">Werbeausgaben / Tag</label>
                             <div class="relative">
-                                <input type="number" id="adspend" inputmode="decimal" pattern="[0-9]*" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="adspend" inputmode="decimal" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -230,19 +150,11 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Erwartete Bestellungen / Tag</label>
                             <div class="relative">
-                                <input type="number" id="orders" inputmode="decimal" pattern="[0-9]*" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all shadow-inner">
+                                <input type="number" id="orders" inputmode="decimal" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
                             </div>
                         </div>
                         <input type="range" id="ordersRange" min="1" max="500" step="1" value="12">
                     </div>
-                </div>
-
-                <div class="mt-8 pt-5 border-t border-white/5">
-                    <p class="text-xs text-slate-500 leading-relaxed font-mono">
-                        * Der Algorithmus subtrahiert vollautomatisch:<br>
-                        • <strong class="text-slate-300">Shopify Basic:</strong> 2.0%<br>
-                        • <strong class="text-slate-300">Stripe EU:</strong> 1.5% + 0.25€
-                    </p>
                 </div>
             </div>
 
@@ -250,28 +162,22 @@
                 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nettogewinn <span class="normal-case opacity-60">(pro Stk.)</span></h3>
-                        <div id="outNetProfit" class="text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter">0,00 €</div>
+                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nettogewinn <span class="normal-case opacity-60">/ Stk.</span></h3>
+                        <div id="outNetProfit" class="text-3xl lg:text-4xl font-bold font-mono tracking-tighter transition-colors duration-300">0,00 €</div>
                     </div>
                     <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-gradient-to-br from-brand-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
                         <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nettomarge</h3>
-                        <div id="outMargin" class="text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter">0,00 %</div>
+                        <div id="outMargin" class="text-3xl lg:text-4xl font-bold font-mono tracking-tighter transition-colors duration-300">0,00 %</div>
                     </div>
                     <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-gradient-to-br from-brand-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1 cursor-help border-b border-dashed border-slate-500 inline-block pb-0.5" title="Mindest-ROAS zur Vermeidung von Verlusten (Umsatz ÷ Bruttogewinn)">Break-Even ROAS</h3>
-                        <div id="outRoas" class="text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter">0.00x</div>
+                        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1 border-b border-dashed border-slate-500 inline-block pb-0.5 cursor-help" title="Mindest-ROAS zur Vermeidung von Verlusten">Break-Even ROAS</h3>
+                        <div id="outRoas" class="text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter transition-colors duration-300">0.00x</div>
                     </div>
                 </div>
 
                 <div class="glass-panel rounded-[2rem] p-6 sm:p-8 flex-grow flex flex-col md:flex-row items-center justify-center gap-8 min-h-[340px]">
-                    
                     <div class="w-full md:w-1/2 relative flex justify-center">
-                        <div class="w-full max-w-[250px] aspect-square relative z-10">
-                            <canvas id="economicsChart"></canvas>
-                        </div>
+                        <div class="w-full max-w-[250px] aspect-square relative z-10"><canvas id="economicsChart"></canvas></div>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1 z-0">
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Umsatz</span>
                             <span id="chartRevenue" class="text-xl font-bold font-mono text-white mt-1">0,00 €</span>
@@ -281,88 +187,85 @@
                     <div class="w-full md:w-1/2 flex flex-col justify-center">
                         <h3 class="text-[11px] font-bold text-slate-400 mb-4 uppercase tracking-widest border-b border-white/5 pb-2">Kostenstruktur</h3>
                         <ul class="space-y-3.5 text-sm font-mono text-slate-300">
-                            <li class="flex justify-between items-center">
-                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-[#334155]"></div> COGS (Produkt+Versand)</span> 
-                                <span id="lblCogs">0,00 €</span>
-                            </li>
-                            <li class="flex justify-between items-center">
-                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-brand-primary"></div> Gebühren (Shopify+Stripe)</span> 
-                                <span id="lblFees">0,00 €</span>
-                            </li>
-                            <li class="flex justify-between items-center">
-                                <span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-brand-accent"></div> Marketing (CPA)</span> 
-                                <span id="lblCpa">0,00 €</span>
-                            </li>
+                            <li class="flex justify-between items-center"><span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-[#334155]"></div> COGS</span> <span id="lblCogs">0,00 €</span></li>
+                            <li class="flex justify-between items-center"><span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-brand-primary"></div> Gebühren</span> <span id="lblFees">0,00 €</span></li>
+                            <li class="flex justify-between items-center"><span class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-brand-accent"></div> Marketing (CPA)</span> <span id="lblCpa">0,00 €</span></li>
                             <li class="flex justify-between items-center pt-3 border-t border-white/10 text-base font-bold">
-                                <span class="flex items-center gap-2"><div id="dotProfit" class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div> Nettogewinn</span> 
-                                <span id="lblProfit" class="text-emerald-400">0,00 €</span>
+                                <span class="flex items-center gap-2"><div id="dotProfit" class="w-3 h-3 rounded-full bg-emerald-500 transition-colors"></div> Nettogewinn</span> 
+                                <span id="lblProfit" class="text-emerald-400 transition-colors">0,00 €</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="cta-gradient rounded-3xl p-[1px] mt-auto shadow-[0_0_30px_rgba(99,91,255,0.15)] hover:shadow-[0_0_45px_rgba(0,212,255,0.3)] transition-all duration-500 group">
+                <div id="ctaContainer" class="cta-neutral rounded-3xl p-[1px] mt-auto transition-all duration-500 group">
                     <div class="bg-brand-dark rounded-[23px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden h-full">
-                        
-                        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-primary/20 rounded-full blur-3xl pointer-events-none transition-opacity group-hover:opacity-100 opacity-60"></div>
+                        <div id="ctaGlow" class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-primary/20 rounded-full blur-3xl pointer-events-none transition-colors duration-500"></div>
                         
                         <div class="z-10 text-center sm:text-left flex-1">
-                            <h4 class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-brand-accent transition-colors">Ihre Marge ist zu gering?</h4>
-                            <p class="text-slate-400 text-sm leading-relaxed max-w-[420px]">
-                                Senken Sie Ihre Gebühren und skalieren Sie effizienter. Starten Sie Ihren professionellen Onlineshop mit Shopify – jetzt kostenlos testen!
+                            <h4 id="ctaTitle" class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight transition-colors">Analysiere deine Unit Economics</h4>
+                            <p id="ctaDesc" class="text-slate-400 text-sm leading-relaxed max-w-[420px] transition-colors">
+                                Passe die Werte an, um herauszufinden, ab welchem ROAS deine Kampagnen wirklich profitabel sind.
                             </p>
                         </div>
                         
-                        <a href="https://www.shopify.com/de/free-trial" target="_blank" rel="nofollow sponsored noopener noreferrer"
-                           class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-100 hover:scale-[1.03] transition-all duration-300">
-                            Jetzt kostenlos testen
+                        <button onclick="triggerIntentModal()" id="ctaBtn" data-intent="none" class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-200 hover:scale-[1.03] transition-all duration-300 opacity-50 pointer-events-none">
+                            <span id="ctaBtnText">Bitte berechnen...</span>
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
+                        </button>
                     </div>
                 </div>
 
             </div>
         </div>
-        
-        <footer class="text-center py-8 mt-10 border-t border-white/5 flex flex-col items-center gap-4 relative z-20">
-            <p class="text-slate-500 text-xs font-mono">
-                &copy; 2026 E-Commerce Unit Economics. 100% Client-Side Processing.
-            </p>
-            <p class="text-slate-600 text-[10px] max-w-2xl px-4 leading-relaxed">
-                * Transparenz-Hinweis: Dieses Tool verarbeitet alle Daten lokal in Ihrem Browser (DSGVO-konform). Wenn Sie über unsere Links einen Shopify-Shop eröffnen, erhalten wir ggf. eine Provision. Dies hält das Tool kostenlos.
-            </p>
+
+        <article class="max-w-4xl mx-auto text-slate-500 text-xs text-justify mt-8 mb-12 opacity-40 hover:opacity-100 transition-opacity">
+            <h2 class="text-sm font-bold text-slate-400 mb-2">E-Commerce Unit Economics & Break-Even ROAS (2026)</h2>
+            <p>Für erfolgreiches Media Buying auf Plattformen wie Meta oder Google Ads ist die Kenntnis der genauen Nettomarge unerlässlich. Versteckte Kosten wie die Shopify Basic Gebühr (2.0%) oder Stripe-Transaktionskosten in der EU (1.5% + 0.25€) reduzieren den Deckungsbeitrag erheblich. Unser lokaler Rechner hilft Dropshipping- und E-Commerce-Brands dabei, den exakten Break-Even ROAS zu berechnen, um Kampagnen verlustfrei zu skalieren.</p>
+        </article>
+
+        <footer class="text-center py-8 border-t border-white/5 flex flex-col items-center gap-4 relative z-20">
+            <p class="text-slate-500 text-xs font-mono">&copy; 2026 E-Commerce Unit Economics. 100% Client-Side.</p>
             <div class="flex gap-6 text-[11px] text-slate-500 underline decoration-slate-700 underline-offset-4">
-                <a href="#" onclick="alert('Impressum\n\nBetrieben von unabhängigen E-Commerce Entwicklern.\nKontakt: hello@' + window.location.hostname); return false;" class="hover:text-slate-300 transition-colors">Impressum</a>
-                <a href="#" onclick="alert('Datenschutz\n\nWir verwenden keine Cookies und speichern keine Nutzerdaten. Alle Berechnungen finden ausschließlich lokal in Ihrem Browser statt.'); return false;" class="hover:text-slate-300 transition-colors">Datenschutz</a>
+                <a href="javascript:alert('Impressum\\n\\nBetrieben von unabhängigen E-Commerce Analysten.\\nKontakt: admin@roas-rechner.online');" class="hover:text-slate-300">Impressum</a>
+                <a href="javascript:alert('Datenschutz\\n\\nKeine Cookies. Keine Server-Logs. Alles passiert lokal.');" class="hover:text-slate-300">Datenschutz</a>
             </div>
         </footer>
     </main>
 
+    <div id="intentModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-[#0a0f1c] border border-slate-700 rounded-2xl p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(0,0,0,0.8)] relative transform scale-95 transition-transform duration-300" id="intentModalContent">
+            <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-600">
+                <svg class="w-6 h-6 text-slate-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <h3 class="text-white font-bold text-lg mb-2">System-Update in Bearbeitung</h3>
+            <p class="text-slate-400 text-sm mb-6 leading-relaxed">Unser Partner-Netzwerk (SaaS-Anbindung) wird derzeit gewartet. Bitte versuchen Sie es in Kürze noch einmal.</p>
+            <button onclick="closeIntentModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors text-sm font-medium border border-slate-600">Verstanden</button>
+        </div>
+    </div>
+
     <script>
-        // DACH 区域极简数字格式化器
         const formatEur = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
         const formatPct = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         const formatRoas = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-        // 数据双向绑定 (Range Slider <-> Number Input)
+        let hasInteracted = false;
+
         const inputs = ['cost', 'price', 'shipping', 'adspend', 'orders'];
-        
         inputs.forEach(id => {
             const numInput = document.getElementById(id);
             const rangeInput = document.getElementById(id + 'Range');
-
             const sync = (val) => {
+                hasInteracted = true;
                 let parsed = parseFloat(val) || 0;
                 numInput.value = parsed;
                 rangeInput.value = parsed;
                 calculate();
             };
-
             numInput.addEventListener('input', (e) => sync(e.target.value));
             rangeInput.addEventListener('input', (e) => sync(e.target.value));
         });
 
-        // 初始化 Chart.js
         const ctx = document.getElementById('economicsChart').getContext('2d');
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Inter', sans-serif";
@@ -370,142 +273,135 @@
         let chart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['COGS (Produkt+Versand)', 'Gebühren (Shopify+Stripe)', 'Marketing (CPA)', 'Nettogewinn'],
+                labels: ['COGS', 'Gebühren', 'Marketing', 'Nettogewinn'],
                 datasets: [{
                     data: [0, 0, 0, 0],
-                    backgroundColor: [
-                        '#334155', // Slate 700
-                        '#635BFF', // Stripe Blurple
-                        '#00D4FF', // Cyan
-                        '#10b981'  // Emerald
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 6
+                    backgroundColor: ['#334155', '#635BFF', '#00D4FF', '#10b981'],
+                    borderWidth: 0, hoverOffset: 6
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '80%',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                        titleColor: '#ffffff',
-                        bodyColor: '#cbd5e1',
-                        bodyFont: { family: "'JetBrains Mono', monospace", size: 13 },
-                        borderColor: 'rgba(255,255,255,0.05)',
-                        borderWidth: 1,
-                        padding: 14,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) label += ': ';
-                                if (context.parsed !== null) {
-                                    label += formatEur.format(context.parsed);
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                },
-                animation: { duration: 300, easing: 'easeOutQuart' }
-            }
+            options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false } }, animation: { duration: 300 } }
         });
 
-        // 核心电商利润算法引擎 (60FPS 实时计算)
+        // 核心计算与情绪渲染引擎
         function calculate() {
-            // 获取最新参数
             const cost = parseFloat(document.getElementById('cost').value) || 0;
             const price = parseFloat(document.getElementById('price').value) || 0;
             const shipping = parseFloat(document.getElementById('shipping').value) || 0;
             const adspend = parseFloat(document.getElementById('adspend').value) || 0;
             const orders = parseInt(document.getElementById('orders').value) || 1;
 
-            // --- 电商数学模型 ---
-            const cogs = cost + shipping; // 销货成本
-            
-            // 平台手续费扣除
-            const shopifyFee = price * 0.02; // Shopify Basic 2%
-            const stripeFee = price > 0 ? (price * 0.015) + 0.25 : 0; // Stripe Europa 1.5% + 0.25€
-            const totalFees = shopifyFee + stripeFee;
+            const cogs = cost + shipping; 
+            const totalFees = (price * 0.02) + (price > 0 ? (price * 0.015) + 0.25 : 0);
+            const cpa = orders > 0 ? adspend / orders : 0; 
 
-            const cpa = orders > 0 ? adspend / orders : 0; // 每单获客成本 (CPA)
+            const grossProfit = price - cogs - totalFees; 
+            const netProfit = grossProfit - cpa;          
+            const margin = price > 0 ? (netProfit / price) * 100 : 0; 
+            let beRoas = grossProfit > 0 ? price / grossProfit : 0;
 
-            const grossProfitBeforeAds = price - cogs - totalFees; // 投放前毛利 (Deckungsbeitrag 1)
-            const netProfit = grossProfitBeforeAds - cpa;          // 最终净利 (Nettogewinn)
-            const margin = price > 0 ? (netProfit / price) * 100 : 0; // 净利润率
-
-            // Break-Even ROAS 计算 (逻辑：售价 / 投放前毛利)
-            let beRoas = 0;
-            let beRoasStr = "Verlust";
-            if (grossProfitBeforeAds > 0) {
-                beRoas = price / grossProfitBeforeAds;
-                beRoasStr = formatRoas.format(beRoas) + 'x';
-            }
-
-            // --- UI 渲染与状态更新 ---
-            const domNetProfit = document.getElementById('outNetProfit');
-            const domMargin = document.getElementById('outMargin');
-            const domRoas = document.getElementById('outRoas');
-            const lblProfit = document.getElementById('lblProfit');
-            const dotProfit = document.getElementById('dotProfit');
-
-            // 填充明细数据
+            // DOM 基础数据渲染
             document.getElementById('chartRevenue').innerText = formatEur.format(price);
             document.getElementById('lblCogs').innerText = formatEur.format(cogs);
             document.getElementById('lblFees').innerText = formatEur.format(totalFees);
             document.getElementById('lblCpa').innerText = formatEur.format(cpa);
 
-            domNetProfit.innerText = formatEur.format(netProfit);
+            const domNet = document.getElementById('outNetProfit');
+            const domMargin = document.getElementById('outMargin');
+            const domRoas = document.getElementById('outRoas');
+            const lblProfit = document.getElementById('lblProfit');
+            const dotProfit = document.getElementById('dotProfit');
+
+            domNet.innerText = formatEur.format(netProfit);
             domMargin.innerText = formatPct.format(margin) + ' %';
             lblProfit.innerText = formatEur.format(netProfit);
-            domRoas.innerText = beRoasStr;
+            domRoas.innerText = grossProfit > 0 ? formatRoas.format(beRoas) + 'x' : 'Verlust';
 
-            // 智能红绿灯变色逻辑 (盈利 vs 亏损)
+            // DOM 变现模块元素
+            const ctaContainer = document.getElementById('ctaContainer');
+            const ctaTitle = document.getElementById('ctaTitle');
+            const ctaDesc = document.getElementById('ctaDesc');
+            const ctaBtnText = document.getElementById('ctaBtnText');
+            const ctaBtn = document.getElementById('ctaBtn');
+            const bgGlow1 = document.getElementById('bgGlow1');
+
             if (netProfit >= 0) {
-                domNetProfit.className = "text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter drop-shadow-[0_0_12px_rgba(16,185,129,0.2)]";
+                // 盈利状态：全屏绿色，激起贪婪，推销扩量工具
+                domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter";
                 lblProfit.className = "text-emerald-400";
                 dotProfit.className = "w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
-                chart.data.datasets[0].backgroundColor[3] = '#10b981'; // 盈利为绿
+                chart.data.datasets[0].backgroundColor[3] = '#10b981';
+                bgGlow1.style.background = 'rgba(16, 185, 129, 0.15)'; // 环境光染绿
+                
+                if(hasInteracted) {
+                    ctaContainer.className = "cta-profit rounded-3xl p-[1px] mt-auto transition-all duration-500 group";
+                    ctaTitle.innerText = "Hervorragend! Bereit zur Skalierung?";
+                    ctaTitle.className = "text-xl sm:text-2xl font-bold text-emerald-300 mb-2 tracking-tight";
+                    ctaDesc.innerText = "Sichern Sie Ihre Gewinne. Skalieren Sie mit unlimitierten Agency-Accounts ohne Bann-Risiko (Meta/Google).";
+                    ctaBtnText.innerText = "Sicher Skalieren";
+                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-lg hover:bg-emerald-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto";
+                    ctaBtn.setAttribute('data-intent', 'scale_adspower_agency');
+                }
             } else {
-                domNetProfit.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter drop-shadow-[0_0_12px_rgba(239,68,68,0.2)]";
+                // 亏损状态：全屏红色，制造焦虑，推销防亏损追踪器
+                domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-red-400 tracking-tighter";
                 lblProfit.className = "text-red-500";
                 dotProfit.className = "w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
-                chart.data.datasets[0].backgroundColor[3] = '#ef4444'; // 亏损为红
+                chart.data.datasets[0].backgroundColor[3] = '#ef4444';
+                bgGlow1.style.background = 'rgba(239, 68, 68, 0.15)'; // 环境光染红
+                
+                if(hasInteracted) {
+                    ctaContainer.className = "cta-loss rounded-3xl p-[1px] mt-auto transition-all duration-500 group";
+                    ctaTitle.innerText = "Achtung! Deine Kampagne verbrennt Geld.";
+                    ctaTitle.className = "text-xl sm:text-2xl font-bold text-red-300 mb-2 tracking-tight";
+                    ctaDesc.innerText = "iOS 14+ zerstört dein Tracking. Finde die Lecks in deinem Funnel mit präziser Server-Side Attribution.";
+                    ctaBtnText.innerText = "Tracking reparieren";
+                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-red-500 text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.5)] hover:bg-red-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto";
+                    ctaBtn.setAttribute('data-intent', 'fix_tracking_triplewhale');
+                }
             }
 
-            // ROAS 亏损状态预警
-            if (grossProfitBeforeAds > 0) {
-                domRoas.className = "text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter drop-shadow-[0_0_12px_rgba(99,91,255,0.3)]";
-            } else {
-                domRoas.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
-            }
+            domRoas.className = grossProfit > 0 ? "text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter" : "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
 
-            // 更新图表 (在视觉上将负利润截断为0，避免破坏环形图体量感，真实的负数已由红色文字表现)
-            const visualProfit = Math.max(0, netProfit);
-            chart.data.datasets[0].data = [cogs, totalFees, cpa, visualProfit];
+            chart.data.datasets[0].data = [cogs, totalFees, cpa, Math.max(0, netProfit)];
             chart.update();
         }
 
-        // 页面加载即计算
+        // 庄家底牌嗅探器：拦截点击并记录高净值意图
+        function triggerIntentModal() {
+            const btn = document.getElementById('ctaBtn');
+            const intent = btn.getAttribute('data-intent');
+            
+            if(intent === 'none') return; // 未交互前不触发
+            
+            // 这里在 Console 模拟发给你的统计后台
+            console.log(`[Ghost Matrix Logger] High-Net-Worth Intent Captured: [${intent}]`);
+            
+            // 弹出优雅的沙盒提示，绝不破坏用户体验
+            const modal = document.getElementById('intentModal');
+            const content = document.getElementById('intentModalContent');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeIntentModal() {
+            const modal = document.getElementById('intentModal');
+            const content = document.getElementById('intentModalContent');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
         document.addEventListener('DOMContentLoaded', calculate);
     </script>
-    <script>
-    // 禁用鼠标右键菜单
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    
-    // 禁用 F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (查看源码)
-    document.onkeydown = function(e) {
-        if(e.keyCode == 123 || 
-          (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || 
-          (e.ctrlKey && e.keyCode == 85)) {
-            return false;
-        }
-    }
-</script>
 </body>
 </html>
