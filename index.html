@@ -283,7 +283,7 @@
             options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false } }, animation: { duration: 300 } }
         });
 
-        // 核心计算与情绪渲染引擎
+        // 核心计算与渲染引擎
         function calculate() {
             const cost = parseFloat(document.getElementById('cost').value) || 0;
             const price = parseFloat(document.getElementById('price').value) || 0;
@@ -326,7 +326,7 @@
             const bgGlow1 = document.getElementById('bgGlow1');
 
             if (netProfit >= 0) {
-                // 盈利状态：全屏绿色，激起贪婪，推销扩量工具
+                // 盈利状态：全屏绿色
                 domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter";
                 lblProfit.className = "text-emerald-400";
@@ -344,7 +344,7 @@
                     ctaBtn.setAttribute('data-intent', 'scale_adspower_agency');
                 }
             } else {
-                // 亏损状态：全屏红色，制造焦虑，推销防亏损追踪器
+                // 亏损状态：全屏红色
                 domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-red-400 tracking-tighter";
                 lblProfit.className = "text-red-500";
@@ -369,14 +369,14 @@
             chart.update();
         }
 
-        // 庄家底牌嗅探器：拦截点击并记录高净值意图
+        // 拦截点击并记录高净值意图
         function triggerIntentModal() {
             const btn = document.getElementById('ctaBtn');
             const intent = btn.getAttribute('data-intent');
             
             if(intent === 'none') return; // 未交互前不触发
             
-            // 这里在 Console 模拟发给你的统计后台
+            // 
             console.log(`[Ghost Matrix Logger] High-Net-Worth Intent Captured: [${intent}]`);
             
             // 弹出优雅的沙盒提示，绝不破坏用户体验
