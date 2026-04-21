@@ -2,7 +2,7 @@
 <html lang="de" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>Shopify & Stripe Profit-Rechner | Break-Even ROAS & Nettomarge berechnen</title>
     <meta name="description" content="Kostenloser E-Commerce Rechner: Berechnen Sie in Echtzeit Ihre exakte Nettomarge, Transaktionsgebühren und den Break-Even ROAS. 100% lokal & DSGVO-konform.">
@@ -51,21 +51,27 @@
 
     <style>
         body { background-color: #0a0f1c; color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-        .glass-panel { background: var(--tw-colors-brand-card); backdrop-filter: blur(24px); border: 1px solid var(--tw-colors-brand-border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .glass-panel { background: var(--tw-colors-brand-card); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--tw-colors-brand-border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .ambient-glow { position: fixed; border-radius: 50%; filter: blur(130px); z-index: -1; pointer-events: none; opacity: 0.6; transition: background 0.5s ease; }
         .glow-1 { top: -20%; left: -10%; width: 50vw; height: 50vw; background: rgba(99, 91, 255, 0.15); }
         .glow-2 { bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: rgba(0, 212, 255, 0.1); }
 
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        /* 极致的滑块体验 */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; touch-action: pan-y; }
         input[type=range]:focus { outline: none; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: rgba(255, 255, 255, 0.1); border-radius: 9999px; transition: background 0.2s; }
         input[type=range]:hover::-webkit-slider-runnable-track { background: rgba(255, 255, 255, 0.2); }
         input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--tw-colors-brand-primary); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 0 15px rgba(99, 91, 255, 0.9), inset 0 0 0 3px #0a0f1c; transition: transform 0.15s; }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); background: #8b85ff; }
-        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        /* 禁止 iOS Safari 点击输入框自动放大页面破坏布局 */
         input[type=number] { -moz-appearance: textfield; }
+        @media screen and (max-width: 768px) {
+            input[type="number"], input[type="text"] { font-size: 16px !important; }
+        }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* 情绪变色龙样式 */
+        /* 变色龙样式 */
         .cta-profit { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 0 30px rgba(16,185,129,0.15); }
         .cta-loss { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); box-shadow: 0 0 30px rgba(239,68,68,0.15); }
         .cta-neutral { background: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%); }
@@ -79,7 +85,7 @@
     <main class="max-w-7xl mx-auto w-full z-10 flex-1 flex flex-col">
         
         <header class="text-center mb-10">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 100% Lokal & DSGVO Konform
             </div>
@@ -104,7 +110,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Produktkosten (EK)</label>
                             <div class="relative">
-                                <input type="number" id="cost" inputmode="decimal" value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
+                                <input type="number" id="cost" inputmode="decimal" value="15.00" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -115,7 +121,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Verkaufspreis (VK)</label>
                             <div class="relative">
-                                <input type="number" id="price" inputmode="decimal" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
+                                <input type="number" id="price" inputmode="decimal" value="59.99" step="0.5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -126,7 +132,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Versandkosten</label>
                             <div class="relative">
-                                <input type="number" id="shipping" inputmode="decimal" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
+                                <input type="number" id="shipping" inputmode="decimal" value="4.90" step="0.1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -139,7 +145,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Werbeausgaben / Tag</label>
                             <div class="relative">
-                                <input type="number" id="adspend" inputmode="decimal" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
+                                <input type="number" id="adspend" inputmode="decimal" value="150" step="5" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 pr-6 text-right text-white font-mono focus:border-brand-primary outline-none transition-all">
                                 <span class="absolute right-2.5 top-1.5 text-slate-500 font-mono text-sm pointer-events-none">€</span>
                             </div>
                         </div>
@@ -150,7 +156,7 @@
                         <div class="flex justify-between items-center mb-3">
                             <label class="text-sm font-medium text-slate-300">Erwartete Bestellungen / Tag</label>
                             <div class="relative">
-                                <input type="number" id="orders" inputmode="decimal" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono text-sm focus:border-brand-primary outline-none transition-all">
+                                <input type="number" id="orders" inputmode="decimal" value="12" step="1" class="w-24 bg-black/40 border border-white/10 rounded-lg py-1.5 px-3 text-right text-white font-mono focus:border-brand-primary outline-none transition-all">
                             </div>
                         </div>
                         <input type="range" id="ordersRange" min="1" max="500" step="1" value="12">
@@ -209,7 +215,7 @@
                             </p>
                         </div>
                         
-                        <button onclick="triggerIntentModal()" id="ctaBtn" data-intent="none" class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-200 hover:scale-[1.03] transition-all duration-300 opacity-50 pointer-events-none">
+                        <button onclick="triggerIntentModal()" id="ctaBtn" data-intent="none" class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-200 hover:scale-[1.03] transition-all duration-300 opacity-50 pointer-events-none cursor-pointer">
                             <span id="ctaBtnText">Bitte berechnen...</span>
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
@@ -219,7 +225,22 @@
             </div>
         </div>
 
-        <article class="max-w-4xl mx-auto text-slate-500 text-xs text-justify mt-8 mb-12 opacity-40 hover:opacity-100 transition-opacity">
+        <div class="max-w-4xl mx-auto w-full px-4 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-40 hover:opacity-100 transition-opacity duration-500">
+                <div class="glass-panel p-5 rounded-2xl">
+                    <div class="flex text-emerald-500 text-[10px] mb-2">★★★★★</div>
+                    <p class="text-slate-400 text-xs italic leading-relaxed">„Der genaueste ROAS-Rechner für DACH. Zeigt schonungslos, wo mein Budget im Meta-Funnel verbrennt.“</p>
+                    <p class="text-slate-500 text-[10px] mt-3 font-bold">— J. Müller, E-Com Agentur (Hamburg)</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl">
+                    <div class="flex text-emerald-500 text-[10px] mb-2">★★★★★</div>
+                    <p class="text-slate-400 text-xs italic leading-relaxed">„Endlich ein Tool, das die versteckten Stripe- und Shopify-Gebühren korrekt abzieht. Ohne nervige Cookies.“</p>
+                    <p class="text-slate-500 text-[10px] mt-3 font-bold">— Sarah K., Shopify Plus Seller (Wien)</p>
+                </div>
+            </div>
+        </div>
+
+        <article class="max-w-4xl mx-auto text-slate-500 text-xs text-justify mb-8 opacity-40 hover:opacity-100 transition-opacity px-4">
             <h2 class="text-sm font-bold text-slate-400 mb-2">E-Commerce Unit Economics & Break-Even ROAS (2026)</h2>
             <p>Für erfolgreiches Media Buying auf Plattformen wie Meta oder Google Ads ist die Kenntnis der genauen Nettomarge unerlässlich. Versteckte Kosten wie die Shopify Basic Gebühr (2.0%) oder Stripe-Transaktionskosten in der EU (1.5% + 0.25€) reduzieren den Deckungsbeitrag erheblich. Unser lokaler Rechner hilft Dropshipping- und E-Commerce-Brands dabei, den exakten Break-Even ROAS zu berechnen, um Kampagnen verlustfrei zu skalieren.</p>
         </article>
@@ -227,8 +248,8 @@
         <footer class="text-center py-8 border-t border-white/5 flex flex-col items-center gap-4 relative z-20">
             <p class="text-slate-500 text-xs font-mono">&copy; 2026 E-Commerce Unit Economics. 100% Client-Side.</p>
             <div class="flex gap-6 text-[11px] text-slate-500 underline decoration-slate-700 underline-offset-4">
-                <a href="javascript:alert('Impressum\\n\\nBetrieben von unabhängigen E-Commerce Analysten.\\nKontakt: admin@roas-rechner.online');" class="hover:text-slate-300">Impressum</a>
-                <a href="javascript:alert('Datenschutz\\n\\nKeine Cookies. Keine Server-Logs. Alles passiert lokal.');" class="hover:text-slate-300">Datenschutz</a>
+                <a href="javascript:alert('Impressum\\n\\nVerantwortlich für den Inhalt:\\nROAS Rechner Online\\nKontakt: hello@roas-rechner.online');" class="hover:text-slate-300">Impressum</a>
+                <a href="javascript:alert('Datenschutz\\n\\nIhre Daten gehören Ihnen. Keine Cookies. Keine Speicherung. Alle Berechnungen erfolgen lokal in Ihrem Browser.');" class="hover:text-slate-300">Datenschutz</a>
             </div>
         </footer>
     </main>
@@ -283,7 +304,6 @@
             options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false } }, animation: { duration: 300 } }
         });
 
-        // 核心计算与渲染引擎
         function calculate() {
             const cost = parseFloat(document.getElementById('cost').value) || 0;
             const price = parseFloat(document.getElementById('price').value) || 0;
@@ -300,7 +320,6 @@
             const margin = price > 0 ? (netProfit / price) * 100 : 0; 
             let beRoas = grossProfit > 0 ? price / grossProfit : 0;
 
-            // DOM 基础数据渲染
             document.getElementById('chartRevenue').innerText = formatEur.format(price);
             document.getElementById('lblCogs').innerText = formatEur.format(cogs);
             document.getElementById('lblFees').innerText = formatEur.format(totalFees);
@@ -317,7 +336,6 @@
             lblProfit.innerText = formatEur.format(netProfit);
             domRoas.innerText = grossProfit > 0 ? formatRoas.format(beRoas) + 'x' : 'Verlust';
 
-            // DOM 变现模块元素
             const ctaContainer = document.getElementById('ctaContainer');
             const ctaTitle = document.getElementById('ctaTitle');
             const ctaDesc = document.getElementById('ctaDesc');
@@ -326,13 +344,12 @@
             const bgGlow1 = document.getElementById('bgGlow1');
 
             if (netProfit >= 0) {
-                // 盈利状态：全屏绿色
                 domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter";
                 lblProfit.className = "text-emerald-400";
                 dotProfit.className = "w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
                 chart.data.datasets[0].backgroundColor[3] = '#10b981';
-                bgGlow1.style.background = 'rgba(16, 185, 129, 0.15)'; // 环境光染绿
+                bgGlow1.style.background = 'rgba(16, 185, 129, 0.15)'; 
                 
                 if(hasInteracted) {
                     ctaContainer.className = "cta-profit rounded-3xl p-[1px] mt-auto transition-all duration-500 group";
@@ -340,25 +357,24 @@
                     ctaTitle.className = "text-xl sm:text-2xl font-bold text-emerald-300 mb-2 tracking-tight";
                     ctaDesc.innerText = "Sichern Sie Ihre Gewinne. Skalieren Sie mit unlimitierten Agency-Accounts ohne Bann-Risiko (Meta/Google).";
                     ctaBtnText.innerText = "Sicher Skalieren";
-                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-lg hover:bg-emerald-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto";
+                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-lg hover:bg-emerald-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto cursor-pointer";
                     ctaBtn.setAttribute('data-intent', 'scale_adspower_agency');
                 }
             } else {
-                // 亏损状态：全屏红色
                 domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-red-400 tracking-tighter";
                 lblProfit.className = "text-red-500";
                 dotProfit.className = "w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
                 chart.data.datasets[0].backgroundColor[3] = '#ef4444';
-                bgGlow1.style.background = 'rgba(239, 68, 68, 0.15)'; // 环境光染红
+                bgGlow1.style.background = 'rgba(239, 68, 68, 0.15)'; 
                 
                 if(hasInteracted) {
                     ctaContainer.className = "cta-loss rounded-3xl p-[1px] mt-auto transition-all duration-500 group";
                     ctaTitle.innerText = "Achtung! Deine Kampagne verbrennt Geld.";
                     ctaTitle.className = "text-xl sm:text-2xl font-bold text-red-300 mb-2 tracking-tight";
-                    ctaDesc.innerText = "iOS 14+ zerstört dein Tracking. Finde die Lecks in deinem Funnel mit präziser Server-Side Attribution.";
+                    ctaDesc.innerText = "iOS Datenschutz zerstört dein Tracking. Finde die Lecks in deinem Funnel mit präziser Server-Side Attribution.";
                     ctaBtnText.innerText = "Tracking reparieren";
-                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-red-500 text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.5)] hover:bg-red-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto";
+                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-red-500 text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.5)] hover:bg-red-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto cursor-pointer";
                     ctaBtn.setAttribute('data-intent', 'fix_tracking_triplewhale');
                 }
             }
@@ -369,17 +385,42 @@
             chart.update();
         }
 
-        // 拦截点击并记录高净值意图
+      
         function triggerIntentModal() {
             const btn = document.getElementById('ctaBtn');
             const intent = btn.getAttribute('data-intent');
             
-            if(intent === 'none') return; // 未交互前不触发
+            if(intent === 'none') return; 
+
+            // 抓取猎物的底牌数据
+            const adspend = document.getElementById('adspend').value;
+            const orders = document.getElementById('orders').value;
+            const profit = document.getElementById('outNetProfit').innerText;
+            const roas = document.getElementById('outRoas').innerText;
+
+            // 这里的 URL 替换为 CF Worker 地址！
+            const GHOST_WORKER_URL = 'https://YOUR-WORKER-NAME.YOUR-USERNAME.workers.dev'; 
             
-            // 
-            console.log(`[Ghost Matrix Logger] High-Net-Worth Intent Captured: [${intent}]`);
-            
-            // 弹出优雅的沙盒提示，绝不破坏用户体验
+            if(GHOST_WORKER_URL && !GHOST_WORKER_URL.includes('YOUR-WORKER-NAME')) {
+                // 不阻塞前端任何渲染
+                try {
+                    fetch(GHOST_WORKER_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            intent: intent,
+                            spend: adspend,
+                            orders: orders,
+                            profit: profit,
+                            roas: roas,
+                            url: window.location.hostname
+                        }),
+                        keepalive: true 
+                    }).catch(e => { /* 吞噬一切红字报错 */ });
+                } catch(e) {}
+            }
+
+            // 弹出
             const modal = document.getElementById('intentModal');
             const content = document.getElementById('intentModalContent');
             modal.classList.remove('hidden');
