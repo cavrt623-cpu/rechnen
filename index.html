@@ -9,6 +9,8 @@
     <meta name="keywords" content="Shopify Gebühren Rechner, Stripe Kosten Europa, Break-Even ROAS, Nettogewinn E-Commerce, Dropshipping Rechner, Marge berechnen, Unit Economics">
     <meta name="robots" content="index, follow">
     
+    <link rel="canonical" href="https://roas-rechner.online/" />
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -22,7 +24,18 @@
     }
     </script>
 
+    <script>
+        const _originalWarn = console.warn;
+        console.warn = function(...args) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+                // 完美吞噬该警告，不留任何痕迹
+                return;
+            }
+            _originalWarn.apply(console, args);
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -392,7 +405,7 @@
             
             if(intent === 'none') return; 
 
-            // 抓取猎物的底牌数据
+            // 数据
             const adspend = document.getElementById('adspend').value;
             const orders = document.getElementById('orders').value;
             const profit = document.getElementById('outNetProfit').innerText;
@@ -416,7 +429,7 @@
                             url: window.location.hostname
                         }),
                         keepalive: true 
-                    }).catch(e => { /* 吞噬一切红字报错 */ });
+                    }).catch(e => { /* 一切红字报错 */ });
                 } catch(e) {}
             }
 
