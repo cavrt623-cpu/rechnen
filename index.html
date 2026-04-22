@@ -229,7 +229,7 @@
                             </p>
                         </div>
                         
-                        <button onclick="triggerIntentModal()" id="ctaBtn" data-intent="none" class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-slate-200 hover:scale-[1.03] transition-all duration-300 opacity-50 pointer-events-none cursor-pointer">
+                        <button onclick="triggerIntentModal()" id="ctaBtn" data-intent="none" class="z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-white/90 text-slate-900 text-sm font-bold rounded-xl shadow-lg hover:bg-white hover:scale-[1.03] transition-all duration-300 opacity-80 cursor-pointer">
                             <span id="ctaBtnText">Bitte berechnen...</span>
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
@@ -268,8 +268,6 @@
         </footer>
     </main>
 
-
-
     <script>
         const formatEur = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
         const formatPct = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -292,7 +290,6 @@
             rangeInput.addEventListener('input', (e) => sync(e.target.value));
         });
 
-        // 核心计算引擎
         function calculate() {
             const cost = parseFloat(document.getElementById('cost').value) || 0;
             const price = parseFloat(document.getElementById('price').value) || 0;
@@ -332,7 +329,7 @@
             const ctaBtn = document.getElementById('ctaBtn');
             const bgGlow1 = document.getElementById('bgGlow1');
 
-            let profitColor = '#10b981'; // 默认盈利绿
+            let profitColor = '#10b981'; 
 
             if (netProfit >= 0) {
                 profitColor = '#10b981';
@@ -347,8 +344,8 @@
                     ctaTitle.innerText = "Hervorragend! Bereit zur Skalierung?";
                     ctaTitle.className = "text-xl sm:text-2xl font-bold text-emerald-300 mb-2 tracking-tight";
                     ctaDesc.innerText = "Sichern Sie Ihre Gewinne. Skalieren Sie mit unlimitierten Agency-Accounts ohne Bann-Risiko (Meta/Google).";
-                    ctaBtnText.innerText = "Sicher Skalieren";
-                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-lg hover:bg-emerald-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto cursor-pointer";
+                    if(ctaBtnText) ctaBtnText.innerText = "Sicher Skalieren";
+                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-lg hover:bg-emerald-400 hover:scale-[1.03] transition-all duration-300 opacity-100 cursor-pointer";
                     ctaBtn.setAttribute('data-intent', 'scale_adspower_agency');
                 }
             } else {
@@ -364,15 +361,14 @@
                     ctaTitle.innerText = "Achtung! Deine Kampagne verbrennt Geld.";
                     ctaTitle.className = "text-xl sm:text-2xl font-bold text-red-300 mb-2 tracking-tight";
                     ctaDesc.innerText = "iOS Datenschutz zerstört dein Tracking. Finde die Lecks in deinem Funnel mit präziser Server-Side Attribution.";
-                    ctaBtnText.innerText = "Tracking reparieren";
-                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-red-500 text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.5)] hover:bg-red-400 hover:scale-[1.03] transition-all duration-300 opacity-100 pointer-events-auto cursor-pointer";
+                    if(ctaBtnText) ctaBtnText.innerText = "Tracking reparieren";
+                    ctaBtn.className = "z-10 flex-shrink-0 inline-flex items-center justify-center px-8 py-3.5 bg-red-500 text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.5)] hover:bg-red-400 hover:scale-[1.03] transition-all duration-300 opacity-100 cursor-pointer";
                     ctaBtn.setAttribute('data-intent', 'fix_tracking_triplewhale');
                 }
             }
 
             domRoas.className = grossProfit > 0 ? "text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter" : "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
 
-            // 👑 庄家手搓：0依赖纯 CSS 圆锥渐变图表更新算法 
             const visualProfit = Math.max(0, netProfit);
             const total = cogs + totalFees + cpa + visualProfit;
 
@@ -394,15 +390,19 @@
             const btn = document.getElementById('ctaBtn');
             const intent = btn.getAttribute('data-intent');
             
-            if(intent === 'none') return; 
+            
+            // 如果访客进来没摸滑块，直接无脑点按钮，系统强行爆发，激活变现文案！
+            if(intent === 'none') {
+                hasInteracted = true;
+                calculate(); 
+                return; // 中断本次无意义跳转，用震撼的绿光/红光逼迫他看清解药，进行第二次致命点击！
+            }
 
-            // 抓取猎物底牌数据
             const adspend = document.getElementById('adspend').value;
             const orders = document.getElementById('orders').value;
             const profit = document.getElementById('outNetProfit').innerText;
             const roas = document.getElementById('outRoas').innerText;
 
-            // 1. 幽灵情报发射 (飞向你的 iPhone Bark)
             const GHOST_WORKER_URL = 'https://metrics-ping.cavrt623.workers.dev'; 
             if(GHOST_WORKER_URL && !GHOST_WORKER_URL.includes('YOUR-WORKER-NAME')) {
                 try {
@@ -415,23 +415,19 @@
                 } catch(e) {}
             }
 
-            // 2. 交互锁死，安抚情绪的“极客加载动画”
             btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Weiterleitung...';
             btn.classList.add('opacity-75', 'cursor-not-allowed', 'pointer-events-none');
 
-            // 3. 致命跳转：携带你的分佣 ID 强行注入
             setTimeout(() => {
                 if(intent === 'scale_adspower_agency') {
-                    // 🟢 绿灯：带着你的专属 ID 瞬间切入 AdsPower！
+                    // 💥 你的 AdsPower 印钞机管道
                     window.location.href = 'https://www.adspower.com/share/dT0PJb';
                 } else if(intent === 'fix_tracking_triplewhale') {
-                    // 🔴 红灯：暂时保留占位符
+                    // 🔴 暂时保留 Triple Whale 的占位符，等你通过审核后修改
                     window.location.href = 'https://triplewhale.grsm.io/YOUR_AFFILIATE_ID_HERE';
                 }
             }, 400); 
         }
-
-
 
         document.addEventListener('DOMContentLoaded', calculate);
     </script>
