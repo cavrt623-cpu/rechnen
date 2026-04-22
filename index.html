@@ -17,7 +17,7 @@
       "@type": "WebApplication",
       "name": "Shopify & Stripe ROAS Rechner",
       "url": "https://roas-rechner.online",
-      "description": "Kostenloser E-Commerce Rechner zur Berechnung von Nettomarge und Break-Even ROAS.",
+      "description": "Kostenloser E-Commerce Rechner zur Berechnung von Nettomarge und Break-Even ROAS. 0 Tracking-Scripts.",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "All",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
@@ -27,41 +27,25 @@
     <script>
         const _originalWarn = console.warn;
         console.warn = function(...args) {
-            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
-                // 完美吞噬该警告，不留任何痕迹
-                return;
-            }
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
             _originalWarn.apply(console, args);
         };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            dark: '#0a0f1c',
-                            card: 'rgba(20, 27, 45, 0.45)',
-                            border: 'rgba(255, 255, 255, 0.08)',
-                            primary: '#635BFF',
-                            accent: '#00D4FF'
-                        }
-                    }
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: { brand: { dark: '#0a0f1c', card: 'rgba(20, 27, 45, 0.45)', border: 'rgba(255, 255, 255, 0.08)', primary: '#635BFF', accent: '#00D4FF' } }
                 }
             }
         }
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
     <style>
         body { background-color: #0a0f1c; color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         .glass-panel { background: var(--tw-colors-brand-card); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--tw-colors-brand-border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
@@ -69,7 +53,7 @@
         .glow-1 { top: -20%; left: -10%; width: 50vw; height: 50vw; background: rgba(99, 91, 255, 0.15); }
         .glow-2 { bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: rgba(0, 212, 255, 0.1); }
 
-        /* 极致的滑块体验 */
+        /* 极客滑块体验 */
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; touch-action: pan-y; }
         input[type=range]:focus { outline: none; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: rgba(255, 255, 255, 0.1); border-radius: 9999px; transition: background 0.2s; }
@@ -77,14 +61,10 @@
         input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: var(--tw-colors-brand-primary); cursor: pointer; -webkit-appearance: none; margin-top: -7px; box-shadow: 0 0 15px rgba(99, 91, 255, 0.9), inset 0 0 0 3px #0a0f1c; transition: transform 0.15s; }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); background: #8b85ff; }
         
-        /* 禁止 iOS Safari 点击输入框自动放大页面破坏布局 */
         input[type=number] { -moz-appearance: textfield; }
-        @media screen and (max-width: 768px) {
-            input[type="number"], input[type="text"] { font-size: 16px !important; }
-        }
+        @media screen and (max-width: 768px) { input[type="number"], input[type="text"] { font-size: 16px !important; } }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* 变色龙样式 */
         .cta-profit { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 0 30px rgba(16,185,129,0.15); }
         .cta-loss { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); box-shadow: 0 0 30px rgba(239,68,68,0.15); }
         .cta-neutral { background: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%); }
@@ -100,7 +80,7 @@
         <header class="text-center mb-10">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                100% Lokal & DSGVO Konform
+                100% Lokal & Absolut Tracking-Frei
             </div>
             <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
                 Shopify & Stripe <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-accent">Unit Economics</span>
@@ -195,11 +175,16 @@
                 </div>
 
                 <div class="glass-panel rounded-[2rem] p-6 sm:p-8 flex-grow flex flex-col md:flex-row items-center justify-center gap-8 min-h-[340px]">
+                    
                     <div class="w-full md:w-1/2 relative flex justify-center">
-                        <div class="w-full max-w-[250px] aspect-square relative z-10"><canvas id="economicsChart"></canvas></div>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1 z-0">
+                        <div class="w-full max-w-[240px] aspect-square relative z-10 flex items-center justify-center">
+                            <div id="cssDoughnut" class="absolute inset-0 w-full h-full rounded-full transition-all duration-500" style="background: conic-gradient(#334155 0% 25%, #635BFF 25% 50%, #00D4FF 50% 75%, #10b981 75% 100%); box-shadow: 0 0 30px rgba(0,0,0,0.3);"></div>
+                            <div class="absolute w-[78%] h-[78%] bg-[#0a0f1c] rounded-full shadow-[inset_0_4px_15px_rgba(0,0,0,0.6)] z-10 border border-white/5"></div>
+                        </div>
+
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1 z-20">
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Umsatz</span>
-                            <span id="chartRevenue" class="text-xl font-bold font-mono text-white mt-1">0,00 €</span>
+                            <span id="chartRevenue" class="text-xl font-bold font-mono text-white mt-1 drop-shadow-md">0,00 €</span>
                         </div>
                     </div>
                     
@@ -247,7 +232,7 @@
                 </div>
                 <div class="glass-panel p-5 rounded-2xl">
                     <div class="flex text-emerald-500 text-[10px] mb-2">★★★★★</div>
-                    <p class="text-slate-400 text-xs italic leading-relaxed">„Endlich ein Tool, das die versteckten Stripe- und Shopify-Gebühren korrekt abzieht. Ohne nervige Cookies.“</p>
+                    <p class="text-slate-400 text-xs italic leading-relaxed">„Endlich ein Tool, das die versteckten Stripe- und Shopify-Gebühren korrekt abzieht. Keine externen Tracker.“</p>
                     <p class="text-slate-500 text-[10px] mt-3 font-bold">— Sarah K., Shopify Plus Seller (Wien)</p>
                 </div>
             </div>
@@ -262,7 +247,7 @@
             <p class="text-slate-500 text-xs font-mono">&copy; 2026 E-Commerce Unit Economics. 100% Client-Side.</p>
             <div class="flex gap-6 text-[11px] text-slate-500 underline decoration-slate-700 underline-offset-4">
                 <a href="javascript:alert('Impressum\\n\\nVerantwortlich für den Inhalt:\\nROAS Rechner Online\\nKontakt: hello@roas-rechner.online');" class="hover:text-slate-300">Impressum</a>
-                <a href="javascript:alert('Datenschutz\\n\\nIhre Daten gehören Ihnen. Keine Cookies. Keine Speicherung. Alle Berechnungen erfolgen lokal in Ihrem Browser.');" class="hover:text-slate-300">Datenschutz</a>
+                <a href="javascript:alert('Datenschutz\\n\\nIhre Daten gehören Ihnen. Keine Cookies. Keine externen Skripte. Alle Berechnungen erfolgen absolut lokal.');" class="hover:text-slate-300">Datenschutz</a>
             </div>
         </footer>
     </main>
@@ -300,23 +285,7 @@
             rangeInput.addEventListener('input', (e) => sync(e.target.value));
         });
 
-        const ctx = document.getElementById('economicsChart').getContext('2d');
-        Chart.defaults.color = '#94a3b8';
-        Chart.defaults.font.family = "'Inter', sans-serif";
-
-        let chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['COGS', 'Gebühren', 'Marketing', 'Nettogewinn'],
-                datasets: [{
-                    data: [0, 0, 0, 0],
-                    backgroundColor: ['#334155', '#635BFF', '#00D4FF', '#10b981'],
-                    borderWidth: 0, hoverOffset: 6
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false } }, animation: { duration: 300 } }
-        });
-
+        // 核心计算引擎
         function calculate() {
             const cost = parseFloat(document.getElementById('cost').value) || 0;
             const price = parseFloat(document.getElementById('price').value) || 0;
@@ -356,12 +325,14 @@
             const ctaBtn = document.getElementById('ctaBtn');
             const bgGlow1 = document.getElementById('bgGlow1');
 
+            let profitColor = '#10b981'; // 默认盈利绿
+
             if (netProfit >= 0) {
+                profitColor = '#10b981';
                 domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-emerald-400 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-white tracking-tighter";
                 lblProfit.className = "text-emerald-400";
                 dotProfit.className = "w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]";
-                chart.data.datasets[0].backgroundColor[3] = '#10b981';
                 bgGlow1.style.background = 'rgba(16, 185, 129, 0.15)'; 
                 
                 if(hasInteracted) {
@@ -374,11 +345,11 @@
                     ctaBtn.setAttribute('data-intent', 'scale_adspower_agency');
                 }
             } else {
+                profitColor = '#ef4444';
                 domNet.className = "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
                 domMargin.className = "text-3xl lg:text-4xl font-bold font-mono text-red-400 tracking-tighter";
                 lblProfit.className = "text-red-500";
                 dotProfit.className = "w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]";
-                chart.data.datasets[0].backgroundColor[3] = '#ef4444';
                 bgGlow1.style.background = 'rgba(239, 68, 68, 0.15)'; 
                 
                 if(hasInteracted) {
@@ -394,28 +365,38 @@
 
             domRoas.className = grossProfit > 0 ? "text-3xl lg:text-4xl font-bold font-mono text-brand-primary tracking-tighter" : "text-3xl lg:text-4xl font-bold font-mono text-red-500 tracking-tighter";
 
-            chart.data.datasets[0].data = [cogs, totalFees, cpa, Math.max(0, netProfit)];
-            chart.update();
+            // 👑 庄家手搓：0依赖纯 CSS 圆锥渐变图表更新算法 
+            const visualProfit = Math.max(0, netProfit);
+            const total = cogs + totalFees + cpa + visualProfit;
+
+            let stop1 = 0, stop2 = 0, stop3 = 0;
+            if (total > 0) {
+                stop1 = (cogs / total) * 100;
+                stop2 = stop1 + ((totalFees / total) * 100);
+                stop3 = stop2 + ((cpa / total) * 100);
+            }
+            
+            const gradient = `conic-gradient(#334155 0% ${stop1}%, #635BFF ${stop1}% ${stop2}%, #00D4FF ${stop2}% ${stop3}%, ${profitColor} ${stop3}% 100%)`;
+            const doughnutEl = document.getElementById('cssDoughnut');
+            if(doughnutEl) {
+                doughnutEl.style.background = gradient;
+            }
         }
 
-      
         function triggerIntentModal() {
             const btn = document.getElementById('ctaBtn');
             const intent = btn.getAttribute('data-intent');
             
             if(intent === 'none') return; 
 
-            // 数据
             const adspend = document.getElementById('adspend').value;
             const orders = document.getElementById('orders').value;
             const profit = document.getElementById('outNetProfit').innerText;
             const roas = document.getElementById('outRoas').innerText;
 
-            
             const GHOST_WORKER_URL = 'https://metrics-ping.cavrt623.workers.dev'; 
             
             if(GHOST_WORKER_URL && !GHOST_WORKER_URL.includes('YOUR-WORKER-NAME')) {
-                // 不阻塞前端任何渲染
                 try {
                     fetch(GHOST_WORKER_URL, {
                         method: 'POST',
@@ -429,11 +410,10 @@
                             url: window.location.hostname
                         }),
                         keepalive: true 
-                    }).catch(e => { /* 一切红字报错 */ });
+                    }).catch(e => {});
                 } catch(e) {}
             }
 
-            // 弹出
             const modal = document.getElementById('intentModal');
             const content = document.getElementById('intentModalContent');
             modal.classList.remove('hidden');
